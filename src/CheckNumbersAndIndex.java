@@ -18,7 +18,7 @@ public class CheckNumbersAndIndex {
         System.out.println("Введите индекс числа: ");
         int num = input.nextInt();
         array[0] = num;
-        System.out.println(array[num]*0.1);
+        System.out.println(array[num]/0.9);
 
 
     }
