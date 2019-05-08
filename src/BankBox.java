@@ -3,66 +3,74 @@ import java.util.Scanner;
 public class BankBox {
     public static void main(String[] args) {
 
-        int num = 0;
+        // double num ;
         double balance = 0;
         Scanner input = new Scanner(System.in);
-
         int m;
-        System.out.println("Добрый день. В данный момент ваш баланс: " + balance);
+        System.out.println("Добрый день. В данный момент ваш баланс: 0");
         do {
 
-            do {
-                System.out.println("Выберите операцию:");
-                System.out.println("0) выход");
-                System.out.println("1) пополнение счета");
-                System.out.println("2) списание со счета");
-                System.out.print("> ");
+            double num;
 
-                m = input.nextInt();
-                if (m != 1 && m != 2 && m!=0 ) {
-                    System.out.println("Введите запрос снова");
+            System.out.println("Выберите операцию:");
+            System.out.println("0) выход");
+            System.out.println("1) пополнение счета");
+            System.out.println("2) списание со счета");
+            System.out.print("> ");
 
-                }
-                if (m == 0) {
-                    System.out.println("Вы вышли");
-                    System.exit(0);
-
-                }
-            } while (m == 0);
-
+            m = input.nextInt();
+            if (m != 1 && m != 2 && m != 0) {
+                System.out.println("Введите запрос снова");
+            }
 
             if (m == 1) {
+
                 do {
-
                     System.out.println("Введите сумму на которую желаете пополнить");
-                    balance = input.nextDouble();
-                    if (balance <= 0) {
+                    System.out.println("0) выход");
+                    System.out.print("> ");
+                    num = input.nextDouble();
+
+                    if (num < 0) {
                         System.out.println("Сумма должна быть положительной");
-
+                        if (num == 0) {
+                            System.out.println("Вы вышли");
+                        }
+                    } else {
+                        balance += num;
                     }
-
-
-                } while (balance <= 0);
+                } while (num < 0 && num == 0);
                 System.out.println("ваш баланс " + balance);
+
             }
 
             if (m == 2) {
+
                 do {
                     System.out.println("Введите сумму которую вы желаете снять");
                     System.out.println("0) выход");
-                    num = input.nextInt();
+                    System.out.print("> ");
+                    num = input.nextDouble();
 
-                    if (num > balance || num < 0) {
+
+                    if (num < 0 || num > balance) {
                         System.out.println("Вы не можете вывести данную сумму");
+                        System.out.println("Ваш баланс: " + balance);
                     }
-                } while (num > balance || num < 0);
-                System.out.println("Ваш остаток " + (balance - num));
+                    if (num == 0) {
+                        System.out.println("Вы вышли");
+                    } else {
+                        balance = balance - num;
+                    }
+                } while (num > balance || num < 0 && num == 0);
+                System.out.println("Ваш остаток " + balance);
             }
 
-
         }
-        while (m != 0) ;
-
+        while (m != 0);
 
     }
+
+
 }
+
