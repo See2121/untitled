@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class CheckNumbersAndIndex {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        int size = 0;
+        int size =0;
         do {
             System.out.println("ВВедите размер массива: ");
             size = input.nextInt();
@@ -13,7 +13,7 @@ public class CheckNumbersAndIndex {
             }
         } while (size <= 0);
 
-        double array[] = new double[size];
+        double[] array = new double[size];
 
         System.out.println("Введите элементы массива: ");
         for (int i = 0; i < size; i++) {
@@ -21,9 +21,7 @@ public class CheckNumbersAndIndex {
         }
 
         System.out.println("Полученный массив: ");
-        for (int i = 0; i < size; i++) {
-            System.out.print("  " + array[i]);
-        }
+        printArray(array);
         System.out.println();
 
 
@@ -43,10 +41,14 @@ public class CheckNumbersAndIndex {
         System.out.println();
 
         System.out.println("результат: ");
-        for (int i = 0; i < size; i++) {
+        printArray(array);
+
+    }
+
+    static void printArray(double[] array) {
+        for (int i = 0; i < array.length; i++) {
             System.out.print("  " + array[i]);
         }
-        System.out.println();
     }
 
 }

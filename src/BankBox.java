@@ -7,7 +7,7 @@ public class BankBox {
         double balance = 0;
         Scanner input = new Scanner(System.in);
         int m;
-        System.out.println("Добрый день. В данный момент ваш баланс: 0");
+        System.out.println("Добрый день. В данный момент ваш баланс: "+balance);
         do {
 
             double num;
