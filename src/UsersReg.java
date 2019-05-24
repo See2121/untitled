@@ -10,11 +10,11 @@ public class UsersReg {
 
         do {
 
-            String login, password ;
+            String login, password;
 
             System.out.println("Select an action:");
-            System.out.println("1) authorization");
-            System.out.println("2) register");
+            System.out.println("1) user authorization");
+            System.out.println("2) user registration");
             System.out.println("0) exit");
             System.out.print("> ");
 
@@ -27,6 +27,7 @@ public class UsersReg {
                 String userLogin = "";
                 String userPassword = "";
                 double balance = 0;
+                byte r =1;
 
                 do {
 
@@ -47,7 +48,7 @@ public class UsersReg {
                             userPassword = str[1];
                             balance = Double.parseDouble(str[2]);
 
-                            break;
+
                         }
 
                     }
@@ -56,118 +57,119 @@ public class UsersReg {
                         System.out.println("Incorrect login or password");
                         System.out.println("0) Exit");
                         System.out.println("1) Try again");
-                        int r = input.nextInt();
-                        if (r == 0) {
+                        r = input.nextByte();
+                        if (r==0){
                             break;
                         }
-                    }
 
+                    }
                 } while (!checkLogin.equals(userLogin) && !checkPassword.equals(userPassword));
 
+                if (r != 0) {
+                    System.out.println("Welcome, " + userLogin + "! Your balance: " + balance);
 
-                System.out.println("Welcome, " + userLogin + " your balance: " + balance);
+
+                    int choiceOfOperations;
+                    do {
+                        System.out.println("Choose operation:");
+                        System.out.println("0) exit");
+                        System.out.println("1) refill");
+                        System.out.println("2) withdraw");
+                        System.out.print("> ");
+
+                        choiceOfOperations = input.nextInt();
+
+                        if (choiceOfOperations != 1 && choiceOfOperations != 2 && choiceOfOperations != 0) {
+                            System.out.println("Wrong option");
+                            continue;
+                        }
+
+                        double number;
+                        if (choiceOfOperations == 1) {
+
+                            do {
+
+                                System.out.println("Enter the amount you want to replenish");
+                                System.out.println("0) exit");
+                                System.out.print("> ");
+                                number = input.nextDouble();
+
+                                if (number < 0) {
+                                    System.out.println("The amount must be positive");
+                                    if (number == 0) {
+                                        System.out.println("You exit");
+                                        break;
+                                    }
+
+                                } else {
+                                    balance += number;
+
+                                    for (int i = 0; i < users.length; i++) {
+                                        String[] str = users[i].split("\\|\\|");
 
 
-                int choiceOfOperations;
-                do {
-                    System.out.println("Choose operation:");
-                    System.out.println("0) exit");
-                    System.out.println("1) refill");
-                    System.out.println("2) withdraw");
-                    System.out.print("> ");
+                                        if (str[0].equals(userLogin)) {
+                                            users[i] = userLogin + "||" + userPassword + "||" + balance;
+                                        }
 
-                    choiceOfOperations = input.nextInt();
+                                    }
 
-                    if (choiceOfOperations != 1 && choiceOfOperations != 2 && choiceOfOperations != 0) {
-                        System.out.println("Wrong option");
-                        continue;
-                    }
+                                }
 
-                    double number;
-                    if (choiceOfOperations == 1) {
+                            } while (number <= 0);
 
-                        do {
+                            System.out.println("Successful operation. Your balance: " + balance);
 
-                            System.out.println("Enter the amount you want to replenish");
-                            System.out.println("0) exit");
-                            System.out.print("> ");
-                            number = input.nextDouble();
+                        }
 
-                            if (number < 0) {
-                                System.out.println("The amount must be positive");
+                        if (choiceOfOperations == 2) {
+
+                            do {
+                                System.out.println("Enter the amount to withdraw");
+                                System.out.println("0) exit");
+                                System.out.print("> ");
+                                number = input.nextDouble();
+
+
+                                if (number < 0 || number > balance) {
+                                    System.out.println("You cannot withdraw this amount");
+                                    System.out.println("Your balance: " + balance);
+                                }
                                 if (number == 0) {
                                     System.out.println("You exit");
-                                    break;
-                                }
+                                } else {
+                                    balance = balance - number;
 
-                            } else {
-                                balance += number;
-
-                                for (int i = 0; i < users.length; i++) {
-                                    String[] str = users[i].split("\\|\\|");
+                                    for (int i = 0; i < users.length; i++) {
+                                        String[] str = users[i].split("\\|\\|");
 
 
-                                    if (str[0].equals(userLogin)) {
-                                        users[i] = userLogin + "||" + userPassword + "||" + balance;
+                                        if (str[0].equals(userLogin)) {
+                                            users[i] = userLogin + "||" + userPassword + "||" + balance;
+                                        }
+
                                     }
 
                                 }
 
-                            }
 
-                        } while (number <= 0);
-
-                        System.out.println("Successful operation. Your balance: " + balance);
-
-                    }
-
-                    if (choiceOfOperations == 2) {
-
-                        do {
-                            System.out.println("Enter the amount to withdraw");
-                            System.out.println("0) exit");
-                            System.out.print("> ");
-                            number = input.nextDouble();
+                            } while (number > balance || number < 0 && number == 0);
 
 
-                            if (number < 0 || number > balance) {
-                                System.out.println("You cannot withdraw this amount");
-                                System.out.println("Your balance: " + balance);
-                            }
-                            if (number == 0) {
-                                System.out.println("You exit");
-                            } else {
-                                balance = balance - number;
-
-                                for (int i = 0; i < users.length; i++) {
-                                    String[] str = users[i].split("\\|\\|");
+                            System.out.println("Your balance " + balance);
 
 
-                                    if (str[0].equals(userLogin)) {
-                                        users[i] = userLogin + "||" + userPassword + "||" + balance;
-                                    }
-
-                                }
-
-                            }
+                        }
 
 
-                        } while (number > balance || number < 0 && number == 0);
-
-
-                        System.out.println("Your balance " + balance);
-
-
-                    }
-
-
-                } while (choiceOfOperations != 0);
+                    } while (choiceOfOperations != 0);
+                }
 
 
             }
 
             if (num == 2) {
-                  String passwordConfirmation;
+                String passwordConfirmation;
                 boolean duplicateFound = false;
 
                 do {
