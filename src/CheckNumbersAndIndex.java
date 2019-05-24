@@ -21,11 +21,22 @@ public class CheckNumbersAndIndex {
         }
 
         System.out.println("Полученный массив: ");
+
+        for (int i = 0; i < size; i++) {
+            System.out.println("  " + array[i]);
+            System.out.println();
+        }
+        System.out.println("Введите индекс числа: ");
+        int num = input.nextInt();
+        array[0] = num;
+        System.out.println(array[num]/0.9);
+
         printArray(array);
         System.out.println();
 
 
         int userIdxForUpdate = 0;
+
 
         do {
             System.out.println("Введите индекс числа: ");
