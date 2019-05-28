@@ -1,12 +1,19 @@
 
+
 import java.util.Scanner;
 
 public class UsersReg {
+
     public static void main(String[] args) {
+        final String userStatus = "false";
+
         Scanner input = new Scanner(System.in);
-        String[] users = new String[]{};
+        String[] users = new String[]{
+                "admin||admin||0||admin||true"
+        };
         final int size = 1;
         int num;
+
 
         do {
 
@@ -26,9 +33,13 @@ public class UsersReg {
                 String checkPassword;
                 String userLogin = "";
                 String userPassword = "";
-                double balance = 0;
-                byte r =1;
+                String typeOfAdmin = "admin";
+                String typeOfUser = "customer";
 
+                String checkStatusOfUser = "";
+                String checkType = "";
+                double balance = 0;
+                byte choiceOfCorrectPassword = 1;
                 do {
 
                     System.out.println("Enter login: ");
@@ -43,33 +54,61 @@ public class UsersReg {
                         String[] str = users[i].split("\\|\\|");
 
 
-                        if (str[0].equals(checkLogin) && str[1].equals(checkPassword)) {
+                        if (str[0].equals(checkLogin) && str[1].equals(checkPassword) && !userStatus.equals(str[4])) {
                             userLogin = str[0];
                             userPassword = str[1];
+                            checkType = str[3];
+                            checkStatusOfUser = str[4];
                             balance = Double.parseDouble(str[2]);
-
-
                         }
 
                     }
+
 
                     if (!checkLogin.equals(userLogin) || !checkPassword.equals(userPassword)) {
-                        System.out.println("Incorrect login or password");
+                        System.out.println("Incorrect login or password \n" +
+                                "or user is not active");
                         System.out.println("0) Exit");
                         System.out.println("1) Try again");
-                        r = input.nextByte();
-                        if (r==0){
+                        choiceOfCorrectPassword = input.nextByte();
+                        if (choiceOfCorrectPassword == 0) {
                             break;
                         }
-
                     }
+
+
                 } while (!checkLogin.equals(userLogin) && !checkPassword.equals(userPassword));
 
-                if (r != 0) {
+
+                if (choiceOfCorrectPassword != 0 && typeOfAdmin.equals(checkType)) {
+                    byte choiceOfAdminOperations;
+
+                    System.out.println("Welcome admin");
+
+                    do {
+
+                        System.out.println("0) Exit");
+                        System.out.println("1) print users");
+                        choiceOfAdminOperations = input.nextByte();
+
+                        if (choiceOfAdminOperations == 1) {
+                            System.out.println("Users:");
+                            for (int i = 0; i < users.length; i++) {
+                                String[] str = users[i].split("\\|\\|");
+                                System.out.println(str[0] + " " + str[3] + " " + str[4]);
+                            }
+                        }
+
+
+                    } while (choiceOfAdminOperations != 0 && choiceOfAdminOperations != 2);
+                }
+
+
+                if (choiceOfCorrectPassword != 0 && typeOfUser.equals(checkType)) {
                     System.out.println("Welcome, " + userLogin + "! Your balance: " + balance);
 
 
-                    int choiceOfOperations;
+                    int choiceOfBankOperations;
                     do {
                         System.out.println("Choose operation:");
                         System.out.println("0) exit");
@@ -77,15 +116,15 @@ public class UsersReg {
                         System.out.println("2) withdraw");
                         System.out.print("> ");
 
-                        choiceOfOperations = input.nextInt();
+                        choiceOfBankOperations = input.nextInt();
 
-                        if (choiceOfOperations != 1 && choiceOfOperations != 2 && choiceOfOperations != 0) {
+                        if (choiceOfBankOperations != 1 && choiceOfBankOperations != 2 && choiceOfBankOperations != 0) {
                             System.out.println("Wrong option");
                             continue;
                         }
 
                         double number;
-                        if (choiceOfOperations == 1) {
+                        if (choiceOfBankOperations == 1) {
 
                             do {
 
@@ -109,7 +148,8 @@ public class UsersReg {
 
 
                                         if (str[0].equals(userLogin)) {
-                                            users[i] = userLogin + "||" + userPassword + "||" + balance;
+                                            users[i] = userLogin + "||" + userPassword + "||" + balance + "||" + checkType + "||true";
+
                                         }
 
                                     }
@@ -122,7 +162,7 @@ public class UsersReg {
 
                         }
 
-                        if (choiceOfOperations == 2) {
+                        if (choiceOfBankOperations == 2) {
 
                             do {
                                 System.out.println("Enter the amount to withdraw");
@@ -145,7 +185,7 @@ public class UsersReg {
 
 
                                         if (str[0].equals(userLogin)) {
-                                            users[i] = userLogin + "||" + userPassword + "||" + balance;
+                                            users[i] = userLogin + "||" + userPassword + "||" + balance + "||" + checkType + "||true";
                                         }
 
                                     }
@@ -162,55 +202,69 @@ public class UsersReg {
                         }
 
 
-                    } while (choiceOfOperations != 0);
+                    } while (choiceOfBankOperations != 0);
                 }
 
 
             }
 
             if (num == 2) {
+
                 String passwordConfirmation;
                 boolean duplicateFound = false;
 
-                do {
-                    System.out.print("Enter login: ");
-                    login = input.next();
 
-                    for (int i = 0; i < users.length; i++) {
-                        String[] str = users[i].split("\\|\\|");
-                        duplicateFound = str[0].equals(login);
-                        if (duplicateFound) {
-                            break;
+                byte next;
+                do {
+                    System.out.println("1) register of user");
+                    System.out.println("0) exit");
+                    next = input.nextByte();
+                    if (next == 1) {
+                        do {
+                            System.out.print("Enter login: ");
+                            login = input.next();
+
+                            for (int i = 0; i < users.length; i++) {
+                                String[] str = users[i].split("\\|\\|");
+                                duplicateFound = str[0].equals(login);
+                                if (duplicateFound) {
+                                    break;
+                                }
+                            }
                         }
+                        while (duplicateFound);
+
+                        do {
+                            System.out.print("Enter password: ");
+                            password = input.next();
+
+                            System.out.print("Confirm password: ");
+                            passwordConfirmation = input.next();
+
+                            if (!passwordConfirmation.equals(password)) {
+                                System.out.println("Password doesn't match");
+                            }
+
+                        } while (!passwordConfirmation.equals(password));
+
+
+                        String[] updatedArray = new String[users.length + size];
+                        for (int i = 0; i < users.length; i++) {
+                            updatedArray[i] = users[i];
+                        }
+
+                        updatedArray[updatedArray.length - 1] = login + "||" + password + "||0||customer||false";
+
+
+                        users = updatedArray;
+                        System.out.println("Users:");
+                        for (int i = 0; i < users.length; i++) {
+                            System.out.println("- " + users[i]);
+                        }
+
                     }
-                } while (duplicateFound);
-
-
-                do {
-                    System.out.print("Enter password: ");
-                    password = input.next();
-
-                    System.out.print("Confirm password: ");
-                    passwordConfirmation = input.next();
-
-                    if (!passwordConfirmation.equals(password)) {
-                        System.out.println("Password doesn't match");
-                    }
-
-                } while (!passwordConfirmation.equals(password));
-
-                String[] updatedArray = new String[users.length + size];
-                for (int i = 0; i < users.length; i++) {
-                    updatedArray[i] = users[i];
-
                 }
-
-                updatedArray[updatedArray.length - 1] = login + "||" + password + "||" + 0;
-                users = updatedArray;
-                System.out.println("Users:");
-                for (int i = 0; i < users.length; i++) {
-                    System.out.println("- " + users[i]);
-                }
+                while (next != 0);
 
 
             }
