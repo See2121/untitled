@@ -90,13 +90,23 @@ public class UsersReg {
                         System.out.println("0) Exit");
                         System.out.println("1) print users");
                         choiceOfAdminOperations = input.nextByte();
+                        int x = 0;
 
                         if (choiceOfAdminOperations == 1) {
                             System.out.println("Users:");
-                            for (int i = 0; i < users.length; i++) {
-                                String[] str = users[i].split("\\|\\|");
-                                System.out.println(str[0] + " " + str[3] + " " + str[4]);
+                            System.out.format("+============+==========+==========+======+%n");
+                            System.out.format("| Username   | Balance  | Type     |Status|%n");
+                            System.out.format("+============+==========+==========+======+%n");
+
+                            for (x = 0; x < users.length; x++) {
+                                String[] str = users[x].split("\\|\\|");
+
+                                System.out.format("|%-12s|%-10s|%-10s|%-6s|%n", str[0], str[2], str[3], str[4]);
+
                             }
+                            System.out.format("+============+==========+==========+======+%n");
+                            System.out.println("Total users: " + x);
+
                         }
 
 
