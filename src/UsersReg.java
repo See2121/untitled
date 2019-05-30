@@ -3,10 +3,12 @@
 import java.util.Scanner;
 
 public class UsersReg {
+    private static final String USER_STATUS_DISABLED = "false";
+    private static final String TYPE_OF_ADMIN = "admin";
+    private static final String TYPE_OF_USER = "customer";
+
 
     public static void main(String[] args) {
-        final String userStatus = "false";
-
         Scanner input = new Scanner(System.in);
         String[] users = new String[]{
                 "admin||admin||0||admin||true"
@@ -14,9 +16,7 @@ public class UsersReg {
         final int size = 1;
         int num;
 
-
         do {
-
             String login, password;
 
             System.out.println("Select an action:");
@@ -27,60 +27,72 @@ public class UsersReg {
 
             num = input.nextInt();
 
-
             if (num == 1) {
-                String checkLogin;
-                String checkPassword;
-                String userLogin = "";
-                String userPassword = "";
-                String typeOfAdmin = "admin";
-                String typeOfUser = "customer";
+                String enteredLogin;
+                String enteredPassword;
 
-                String checkStatusOfUser = "";
-                String checkType = "";
-                double balance = 0;
+                String userLogin = null;
+                String userPassword = null;
+                String userType = null;
+                String userStatus = null;
+                double userBalance = 0;
+
                 byte choiceOfCorrectPassword = 1;
+
+                boolean loginOperationResult = false;
                 do {
 
                     System.out.println("Enter login: ");
                     System.out.print("> ");
-                    checkLogin = input.next();
+                    enteredLogin = input.next();
 
                     System.out.println("Enter password: ");
                     System.out.print("> ");
-                    checkPassword = input.next();
+                    enteredPassword = input.next();
+
 
                     for (int i = 0; i < users.length; i++) {
                         String[] str = users[i].split("\\|\\|");
 
-
-                        if (str[0].equals(checkLogin) && str[1].equals(checkPassword) && !userStatus.equals(str[4])) {
+                        if (str[0].equals(enteredLogin) && str[1].equals(enteredPassword)) {
                             userLogin = str[0];
                             userPassword = str[1];
-                            checkType = str[3];
-                            checkStatusOfUser = str[4];
-                            balance = Double.parseDouble(str[2]);
+                            userBalance = Double.parseDouble(str[2]);
+                            userType = str[3];
+                            userStatus = str[4];
                         }
-
                     }
 
-
-                    if (!checkLogin.equals(userLogin) || !checkPassword.equals(userPassword)) {
-                        System.out.println("Incorrect login or password \n" +
-                                "or user is not active");
+                    if (userLogin == null) {
+                        System.out.println("Incorrect login or password");
                         System.out.println("0) Exit");
                         System.out.println("1) Try again");
                         choiceOfCorrectPassword = input.nextByte();
                         if (choiceOfCorrectPassword == 0) {
                             break;
+                        } else {
+                            continue;
                         }
                     }
 
+                    if (USER_STATUS_DISABLED.equals(userStatus)) {
+                        System.out.println("You are not active");
+                        System.out.println("0) Exit");
+                        System.out.println("1) Try again");
+                        choiceOfCorrectPassword = input.nextByte();
+                        if (choiceOfCorrectPassword == 0) {
+                            break;
+                        } else {
+                            continue;
+                        }
+                    }
 
-                } while (!checkLogin.equals(userLogin) && !checkPassword.equals(userPassword));
+                    loginOperationResult = true;
+
+                } while (!loginOperationResult);
 
 
-                if (choiceOfCorrectPassword != 0 && typeOfAdmin.equals(checkType)) {
+                if (choiceOfCorrectPassword != 0 && TYPE_OF_ADMIN.equals(userType)) {
                     byte choiceOfAdminOperations;
 
                     System.out.println("Welcome admin");
@@ -89,8 +101,11 @@ public class UsersReg {
 
                         System.out.println("0) Exit");
                         System.out.println("1) print users");
+                        System.out.println("2) correct status of user");
+                        System.out.print("> ");
                         choiceOfAdminOperations = input.nextByte();
-                        int x = 0;
+                        int x;
+                        String choice;
 
                         if (choiceOfAdminOperations == 1) {
                             System.out.println("Users:");
@@ -110,12 +125,39 @@ public class UsersReg {
                         }
 
 
-                    } while (choiceOfAdminOperations != 0 && choiceOfAdminOperations != 2);
+                        if (choiceOfAdminOperations == 2) {
+                            System.out.println("Select the user you would like to change status: ");
+                            for (x = 0; x < users.length; x++) {
+                                String[] str = users[x].split("\\|\\|");
+                                System.out.println(str[0]);
+                            }
+
+                            choice = input.next();
+
+                            for (x = 0; x < users.length; x++) {
+                                String[] str = users[x].split("\\|\\|");
+
+                                if (str[0].equals(choice)) {
+
+                                    if (str[4].equals("false")) {
+                                        users[x] = choice + "||" + str[1] + "||" + str[2] + "||" + str[3] + "||true";
+                                    } else {
+                                        users[x] = choice + "||" + str[1] + "||" + str[2] + "||" + str[3] + "||false";
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+
+                    } while (choiceOfAdminOperations != 0 && choiceOfAdminOperations != 3);
                 }
 
 
-                if (choiceOfCorrectPassword != 0 && typeOfUser.equals(checkType)) {
-                    System.out.println("Welcome, " + userLogin + "! Your balance: " + balance);
+                if (choiceOfCorrectPassword != 0 && TYPE_OF_USER.equals(userType)) {
+                    System.out.println("Welcome, " + userLogin + "! Your balance: " + userBalance);
 
 
                     int choiceOfBankOperations;
@@ -151,14 +193,14 @@ public class UsersReg {
                                     }
 
                                 } else {
-                                    balance += number;
+                                    userBalance += number;
 
                                     for (int i = 0; i < users.length; i++) {
                                         String[] str = users[i].split("\\|\\|");
 
 
                                         if (str[0].equals(userLogin)) {
-                                            users[i] = userLogin + "||" + userPassword + "||" + balance + "||" + checkType + "||true";
+                                            users[i] = userLogin + "||" + userPassword + "||" + userBalance + "||" + userType + "||true";
 
                                         }
 
@@ -168,7 +210,7 @@ public class UsersReg {
 
                             } while (number <= 0);
 
-                            System.out.println("Successful operation. Your balance: " + balance);
+                            System.out.println("Successful operation. Your balance: " + userBalance);
 
                         }
 
@@ -181,21 +223,21 @@ public class UsersReg {
                                 number = input.nextDouble();
 
 
-                                if (number < 0 || number > balance) {
+                                if (number < 0 || number > userBalance) {
                                     System.out.println("You cannot withdraw this amount");
-                                    System.out.println("Your balance: " + balance);
+                                    System.out.println("Your balance: " + userBalance);
                                 }
                                 if (number == 0) {
                                     System.out.println("You exit");
                                 } else {
-                                    balance = balance - number;
+                                    userBalance = userBalance - number;
 
                                     for (int i = 0; i < users.length; i++) {
                                         String[] str = users[i].split("\\|\\|");
 
 
                                         if (str[0].equals(userLogin)) {
-                                            users[i] = userLogin + "||" + userPassword + "||" + balance + "||" + checkType + "||true";
+                                            users[i] = userLogin + "||" + userPassword + "||" + userBalance + "||" + userType + "||true";
                                         }
 
                                     }
@@ -203,18 +245,16 @@ public class UsersReg {
                                 }
 
 
-                            } while (number > balance || number < 0 && number == 0);
+                            } while (number > userBalance || number < 0 && number == 0);
 
 
-                            System.out.println("Your balance " + balance);
-
+                            System.out.println("Your balance: " + userBalance);
 
                         }
 
 
                     } while (choiceOfBankOperations != 0);
                 }
-
 
             }
 
@@ -273,15 +313,12 @@ public class UsersReg {
                         }
 
                     }
-                }
-                while (next != 0);
+                } while (next != 0);
 
 
             }
-        }
-        while (num != 0);
+        } while (num != 0);
+
         System.out.println("Good bye");
-
-
     }
 }
