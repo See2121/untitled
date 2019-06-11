@@ -47,7 +47,6 @@ public class CheckNumbersAndIndex {
         System.out.println("результат: ");
         printArray(array);
 
-
     }
 
     static void printArray(double[] array) {
