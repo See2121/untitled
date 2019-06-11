@@ -2,8 +2,9 @@ import java.util.Scanner;
 
 public class CheckNumbersAndIndex {
     public static void main(String[] args) {
+        
         Scanner input = new Scanner(System.in);
-        int size =0;
+        int size;
         do {
             System.out.println("ВВедите размер массива: ");
             size = input.nextInt();
@@ -11,6 +12,7 @@ public class CheckNumbersAndIndex {
             if (size <= 0) {
                 System.out.println("Размер массива должен быть больше 0");
             }
+            
         } while (size <= 0);
 
         double[] array = new double[size];
@@ -51,9 +53,8 @@ public class CheckNumbersAndIndex {
         array[userIdxForUpdate - 1] = array[userIdxForUpdate - 1] + array[userIdxForUpdate - 1] / 100 * 10;
         System.out.println();
 
-        System.out.println("результат: ");
+        System.out.println("Результат: ");
         printArray(array);
-
     }
 
     static void printArray(double[] array) {
