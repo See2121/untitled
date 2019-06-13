@@ -5,8 +5,7 @@ import java.util.Scanner;
 public class CheckNumbersAndIndex {
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
-        int size = 0;
-
+        int size;
 
         do {
             System.out.println("ВВедите размер массива: ");
@@ -29,7 +28,7 @@ public class CheckNumbersAndIndex {
         System.out.println();
 
 
-        int userIdxForUpdate = 0;
+        int userIdxForUpdate ;
 
         do {
             System.out.println("Введите индекс числа: ");
@@ -46,7 +45,6 @@ public class CheckNumbersAndIndex {
 
         System.out.println("результат: ");
         printArray(array);
-
 
     }
 
