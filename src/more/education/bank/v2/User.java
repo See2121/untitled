@@ -3,7 +3,7 @@ package more.education.bank.v2;
 public class User {
 
     private String login;
-    private String pass;
+    private String password;
     private double balance;
     private boolean active;
     private UserType type;
@@ -11,9 +11,9 @@ public class User {
     public User() {
     }
 
-    public User(String login, String pass, double balance, boolean active, UserType type) {
+    public User(String login, String password, double balance, boolean active, UserType type) {
         this.login = login;
-        this.pass = pass;
+        this.password = password;
         this.balance = balance;
         this.active = active;
         this.type = type;
@@ -29,12 +29,12 @@ public class User {
         this.login = login;
     }
 
-    public String getPass() {
-        return pass;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public double getBalance() {
@@ -65,20 +65,20 @@ public class User {
     public String toString() {
         return "User{" +
                 "login='" + login + '\'' +
-                ", pass='" + pass + '\'' +
+                ", password='" + password + '\'' +
                 ", balance=" + balance +
                 ", active='" + active + '\'' +
                 ", type='" + type + '\'' +
                 '}';
     }
 
-    static void printArray(User[] users) {
+  public   static void printArray(User[] users) {
         for (int i = 0; i < users.length; i++) {
             System.out.println(users[i]);
         }
     }
 
-    static void printUsers(User[] users) {
+ public    static void printUsers(User[] users) {
         for (int i = 0; i < users.length; i++) {
             System.out.println(users[i].getLogin());
         }
