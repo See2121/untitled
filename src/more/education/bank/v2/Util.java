@@ -1,5 +1,7 @@
 package more.education.bank.v2;
 
+import more.education.bank.v2.model.User;
+
 public class Util {
 
     public static User searchUser(User[] users, String username) {

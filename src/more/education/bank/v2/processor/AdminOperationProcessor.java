@@ -1,13 +1,23 @@
 package more.education.bank.v2.processor;
 
-import more.education.bank.v2.User;
-import more.education.bank.v2.UserType;
+import more.education.bank.v2.service.MonitoringService;
+import more.education.bank.v2.model.User;
+import more.education.bank.v2.model.UserType;
 
 import java.util.Scanner;
 
-class AdminOperation {
+class AdminOperationProcessor {
+
+    private MonitoringService monitoringService;
+
+    public AdminOperationProcessor(MonitoringService monitoringService) {
+        this.monitoringService = monitoringService;
+    }
+
 
     public boolean processor(Scanner input, User[] users, boolean status) {
+
+
         System.out.println("Welcome admin");
         byte choiceOfAdminOperations;
         String choice;
@@ -17,16 +27,17 @@ class AdminOperation {
             System.out.println("0) Exit");
             System.out.println("1) print users");
             System.out.println("2) correct status of user");
+            System.out.println("3) view authorization log");
             System.out.print("> ");
             choiceOfAdminOperations = input.nextByte();
 
             if (choiceOfAdminOperations == 1) {
 
                 int i;
-                AdminOperation.printTable();
+                AdminOperationProcessor.printTable();
 
                 for (i = 0; i < users.length; i++) {
-                    AdminOperation.printUsers(users[i].getLogin(), users[i].getBalance(), users[i].getType(), users[i].isActive());
+                    AdminOperationProcessor.printUsers(users[i].getLogin(), users[i].getBalance(), users[i].getType(), users[i].isActive());
                 }
 
                 System.out.format("+============+==========+==========+======+%n");
@@ -44,14 +55,16 @@ class AdminOperation {
 
                 for (int i = 0; i < users.length; i++) {
 
-                    users[i].setActive(AdminOperation.usersStatus(users[i].isActive(), choice, users[i].getLogin()));
-
+                    users[i].setActive(AdminOperationProcessor.usersStatus(users[i].isActive(), choice, users[i].getLogin()));
                 }
+            }
+
+            if (choiceOfAdminOperations == 3) {
+                monitoringService.getEvents();
 
             }
 
         } while (choiceOfAdminOperations != 0);
-
 
         return status;
     }
@@ -67,6 +80,7 @@ class AdminOperation {
 
     static void printUsers(String login, double balance, UserType type, boolean status) {
         System.out.format("|%-12s|%-10s|%-10s|%-6s|%n", login, balance, type, status);
+
     }
 
 
