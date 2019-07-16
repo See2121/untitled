@@ -1,11 +1,23 @@
 package more.education.bank.v2.processor;
 
-import more.education.bank.v2.User;
-import more.education.bank.v2.UserType;
+import more.education.bank.v2.model.User;
+import more.education.bank.v2.model.UserType;
+import more.education.bank.v2.model.event.UserRegisteredEvent;
+import more.education.bank.v2.service.MonitoringService;
 
+import java.util.Date;
 import java.util.Scanner;
 
 public class UserRegistrationProcessor {
+
+    Date trackeddAt;
+
+    private MonitoringService monitoringService;
+
+    public UserRegistrationProcessor(MonitoringService monitoringService) {
+        this.monitoringService = monitoringService;
+    }
+
 
     static User checkForUniqueness(User[] users, String login, User newUser) {
         int i;
@@ -26,7 +38,6 @@ public class UserRegistrationProcessor {
     public User[] process(User[] users, Scanner input) {
         User newUser = new User();
 
-
         String password;
         String passwordConfirmation;
         String login;
@@ -34,6 +45,7 @@ public class UserRegistrationProcessor {
         do {
             System.out.print("Enter login: ");
             login = input.next();
+            trackeddAt = new Date();
 
             newUser = checkForUniqueness(users, login, newUser);
 
@@ -58,6 +70,8 @@ public class UserRegistrationProcessor {
 
         } while (!passwordConfirmation.equals(password));
 
+        monitoringService.logEvent(new UserRegisteredEvent(login,trackeddAt));
+
 
         newUser.setPassword(password);
         newUser.setActive(true);
@@ -77,6 +91,7 @@ public class UserRegistrationProcessor {
         User.printArray(users);
 
         return users;
+
 
     }
 

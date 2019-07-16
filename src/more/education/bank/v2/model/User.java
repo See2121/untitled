@@ -1,6 +1,7 @@
-package more.education.bank.v2;
+package more.education.bank.v2.model;
 
 public class User {
+
 
     private String login;
     private String password;
@@ -18,7 +19,6 @@ public class User {
         this.active = active;
         this.type = type;
     }
-
 
 
     public String getLogin() {
@@ -70,15 +70,16 @@ public class User {
                 ", active='" + active + '\'' +
                 ", type='" + type + '\'' +
                 '}';
+
     }
 
-  public   static void printArray(User[] users) {
+    public static void printArray(User[] users) {
         for (int i = 0; i < users.length; i++) {
             System.out.println(users[i]);
         }
     }
 
- public    static void printUsers(User[] users) {
+    public static void printUsers(User[] users) {
         for (int i = 0; i < users.length; i++) {
             System.out.println(users[i].getLogin());
         }
@@ -86,6 +87,7 @@ public class User {
 
 
 }
+
 
 
 
